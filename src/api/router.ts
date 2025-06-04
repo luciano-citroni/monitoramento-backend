@@ -1,22 +1,10 @@
 import { Router, Request, Response } from 'express';
-import { httpRequestCounter, httpRequestDuration } from '../metrics/metrics';
+import { Controller } from './controller';
 
 const testeRouter = Router();
 
-testeRouter.get('/', (request: Request, response: Response) => {
-    const end = httpRequestDuration.startTimer();
+const controller = new Controller();
 
-    const teste = 'ola mundo';
-
-    response.json({ result: teste }).status(200);
-
-    httpRequestCounter.inc({
-        method: request.method,
-        route: '/teste',
-        status: 200,
-    });
-
-    end({ method: request.method, route: '/teste', status: 200 });
-});
+testeRouter.post('/rolldice', controller.rolldice);
 
 export { testeRouter };
